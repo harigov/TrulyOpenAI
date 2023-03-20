@@ -30,13 +30,13 @@
             <div class="col-lg-12">
                 <div class="card chat-app">
                     <div id="plist" class="people-list">
-                        <div class="card h-100">
+                        <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h6 class="m-0">Chat Sessions</h6>
                                 <button class="btn btn-sm btn-success" type="button" id="addButton"><i class="fa fa-add"></i></button>
                             </div>
                             <div class="card-body h-100">
-                                <ul class="list-unstyled chat-list mt-2 mb-0"></ul>
+                                <ul class="list-unstyled chat-list mt-2 mb-0" id="chat-list-container"></ul>
                             </div>
                         </div>
                     </div>
@@ -54,35 +54,16 @@
                             </div>
                         </div>
                         <div class="chat-history">
-                            <ul class="m-b-0">
-                                <li class="clearfix">
-                                    <div class="message-data text-right">
-                                        <span class="message-data-time">10:10 AM, Today</span>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-                                    </div>
-                                    <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message-data">
-                                        <span class="message-data-time">10:12 AM, Today</span>
-                                    </div>
-                                    <div class="message my-message">Are we meeting today?</div>                                    
-                                </li>                               
-                                <li class="clearfix">
-                                    <div class="message-data">
-                                        <span class="message-data-time">10:15 AM, Today</span>
-                                    </div>
-                                    <div class="message my-message">Project has been already finished and I have results to show you.</div>
-                                </li>
+                            <ul class="chat-messages-container m-b-0">
                             </ul>
                         </div>
                         <div class="chat-message clearfix">
-                            <div class="input-group mb-0">
-                                <input type="text" class="form-control" placeholder="Enter text here...">                                    
+                            <form class="input-group mb-0">
+                                <input type="text" class="form-control" id="chat-input" placeholder="Enter text here...">                                    
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-send"></i></span>
+                                    <input type="submit" value="Send" id="sendButton" class="input-group-text btn-send"></input>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

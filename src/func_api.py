@@ -1,50 +1,21 @@
 import json
 from flask import Flask, request
 from flask_restful import Resource, Api
+from langchain.llms import OpenAIChat
 import requests
 
-app = Flask(__name__)
-api = Api(app)
+import ai
 
 class ChatCompletion(Resource):
     def post(self):
-        # Extract request parameters
         req_data = request.get_json()
-
-        # Call OpenAI API with the request parameters
-        response = openai.Completion.create(
-            engine=req_data.get("model"),
-            messages=req_data.get("messages"),
-            n=req_data.get("n", 1),
-            temperature=req_data.get("temperature", 1),
-            top_p=req_data.get("top_p", 1),
-            stream=req_data.get("stream", False),
-            stop=req_data.get("stop", None),
-            max_tokens=req_data.get("max_tokens", None),
-            presence_penalty=req_data.get("presence_penalty", 0),
-            frequency_penalty=req_data.get("frequency_penalty", 0),
-            logit_bias=req_data.get("logit_bias", None),
-            user=req_data.get("user", None),
-        )
-
-        # Return the response from OpenAI API
+        response = ai.chat_completion(req_data.get('messages'))
         return json.loads(response)
 
 class ImageGeneration(Resource):
     def post(self):
-        # Extract request parameters
         req_data = request.get_json()
-
-        # Call OpenAI API with the request parameters
-        response = openai.Image.create(
-            prompt=req_data.get("prompt"),
-            n=req_data.get("n", 1),
-            size=req_data.get("size", "1024x1024"),
-            response_format=req_data.get("response_format", "url"),
-            user=req_data.get("user", None),
-        )
-
-        # Return the response from OpenAI API
+        response = ai.image_generation(req_data.get('prompt'), req_data.get('size', '512x512'))
         return json.loads(response)
 
 class AudioTranscription(Resource):
@@ -56,21 +27,9 @@ class AudioTranscription(Resource):
         audio_url = req_data.get("file")
         audio_content = requests.get(audio_url).content
 
-        # Call OpenAI API with the request parameters
-        response = openai.Audio.create(
-            file=audio_content,
-            model=req_data.get("model", "whisper-1"),
-            prompt=req_data.get("prompt", None),
-            response_format=req_data.get("response_format", "json"),
-            temperature=req_data.get("temperature", 0),
-            language=req_data.get("language", None),
-        )
+        return ai.voice_transcription(audio_content)
 
-        # Return the response from OpenAI API
-        return json.loads(response)
-
-
-def register_api(app):
+def register_api(api):
     # Add the chat completion endpoint
     api.add_resource(ChatCompletion, '/v1/chat/completions')
 
