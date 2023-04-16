@@ -63,7 +63,7 @@ const createChatSessionElements = async () => {
     sessions.forEach((session) => {
         const listItem = `
       <li class="clearfix session-item" data-session-id="${session.id}">
-        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+        <img src="${BASE_URL+'/static/img/avatar.webp'}" alt="avatar">
         <div class="about">
           <div class="name">${session.name}</div>
         </div>
@@ -77,6 +77,8 @@ const createChatSessionElements = async () => {
 };
 
 const createChatMessageItem = (role, message, created_at) => {
+    // Replace newlines with <br>
+    message = message.replace(/(?:\r)/g, '<br>');
     if (role == 'assistant') {
         return $(`
         <li class="clearfix">
@@ -119,7 +121,8 @@ const activateSession = async (event) => {
     const sessionId = $(event.currentTarget).data('session-id');
     const sessionName = $(event.currentTarget).find('.name').text();
     $('.chat').data('session-id', sessionId);
-    $('.chat-about').text(sessionName);
+    $('#session-name').val(sessionName);
+    $('#chat-input').prop('disabled', false);
     console.log(`Session ${sessionId} activated`);
 };
 
@@ -153,4 +156,7 @@ $(document).ready(() => {
     // Create chat session elements on page load
     createChatSessionElements();
     $('#chat-input').focus();
+
+    // Disable #chat-input when no session is active
+    $('#chat-input').prop('disabled', true);
 });
